@@ -1,0 +1,34 @@
+ul{
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 10px;
+   
+}
+.contactItem{
+ border: 2px solid rgb(49, 101, 234);
+ grid-template-columns: max-content;
+ border-radius: 5px;
+  display: flex;
+        flex-direction: column;
+       align-items:  start;
+} 
+
+.delBtn{
+    border: none;
+    padding: 12px 15px;
+    background-color: lightblue;
+    border-radius: 8px;
+    transition: all .4s ease;
+    font-weight: bold;
+    
+    &:hover{
+      background-color: rgb(100, 157, 176);
+      cursor: pointer;
+    }}
+
+ span{
+    padding: 5px;
+ }
+ 
