@@ -1,13 +1,12 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styles from "../ContactForm/ContactForm.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "nanoid";
-import { selectContacts } from "../../redux/contactsSlice";
+import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
 import { addContactThunk } from "../../redux/contactsOps";
 
 const ContactFormSchema = Yup.object().shape({
-  contactName: Yup.string()
+  name: Yup.string()
     .min(3, "Too Short! Min 3 symbols.")
     .max(50, "Too Long!")
     .required("Required"),
@@ -18,26 +17,23 @@ const ContactFormSchema = Yup.object().shape({
 });
 
 export const ContactForm = () => {
-  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = (values, { resetForm }) => {
-    const { contactName, number } = values;
-
-    if (contacts.some((contact) => contact.contactName === contactName)) {
-      alert("This contact already exists!");
-      return;
-    }
-
-    dispatch(addContactThunk({ id: nanoid(), contactName, number }));
-
+    dispatch(
+      addContactThunk({
+        id: nanoid(),
+        name: values.name,
+        number: values.number,
+      })
+    );
     resetForm();
   };
 
   return (
     <div>
       <Formik
-        initialValues={{ contactName: "", number: "" }}
+        initialValues={{ name: "", number: "" }}
         validationSchema={ContactFormSchema}
         onSubmit={handleSubmit}
       >
@@ -45,15 +41,11 @@ export const ContactForm = () => {
           <label className={styles.label}>
             <span>Name</span>
             <Field
-              name="contactName"
+              name="name"
               className={styles.input}
               placeholder="Add contact name"
             />
-            <ErrorMessage
-              name="contactName"
-              component="p"
-              className={styles.error}
-            />
+            <ErrorMessage name="name" component="p" className={styles.error} />
           </label>
 
           <label className={styles.label}>
